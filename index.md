@@ -14,12 +14,12 @@ Email: dnwldlwl@unist.ac.kr
 ## Publications
 1. **Flat Reward in Policy Parameter Space Implies Robust Reinforcement Learning**  
    *ICLR 2025 (Oral)*  
-   [OpenReview](https://openreview.net/forum?id=4OaO3GjP7k) | [Google Scholar](https://scholar.google.com/citations?user=XXXX)
+   [OpenReview](https://openreview.net/forum?id=4OaO3GjP7k) | [Google Scholar](https://scholar.google.com/citations?user=DVfJVbYAAAAJ)
 
 ---
 
 ## Profiles
-- [Google Scholar](https://scholar.google.com/citations?user=XXXX)  
+- [Google Scholar](https://scholar.google.com/citations?user=DVfJVbYAAAAJ)  
 - [OpenReview](https://openreview.net/profile?id=~Hyun_Kyu_Lee1)  
 - [GitHub](https://github.com/HK-05)
 
