@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyun Kyu Lee — Robust RL · Quantum ML · Physical AI</title>
+<meta name="description" content="Hyun Kyu Lee, Ph.D. candidate at UNIST AI Graduate School. Robust Reinforcement Learning, Quantum Machine Learning, Physical AI. ICLR 2025 Oral, ICML 2026.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #131c26;
+    --slate: #4a5568;
+    --faint: #8a94a3;
+    --paper: #fcfcfa;
+    --line: #e4e6e3;
+    --accent: #2b4c7e;       /* deep scholarly blue */
+    --accent-soft: #eef2f8;
+    --quantum: #6b4fa1;      /* reserved for quantum tags */
+    --oral: #9a3412;         /* highlight for Oral / top honors */
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 15.5px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .15s; }
+  a:hover { border-bottom-color: var(--accent); }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Sticky top nav ---------- */
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(252, 252, 250, 0.92);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topnav-inner {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 52px;
+  }
+  .topnav .brand {
+    font-family: 'Newsreader', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    border: none;
+    margin-right: auto;
+  }
+  .topnav .brand:hover { color: var(--accent); }
+  .topnav a.navlink {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--slate);
+    border: none;
+    padding: 4px 2px;
+    border-bottom: 2px solid transparent;
+  }
+  .topnav a.navlink:hover { color: var(--accent); border-bottom-color: var(--accent); }
+  @media (max-width: 640px) {
+    .topnav-inner { gap: 16px; overflow-x: auto; }
+    .topnav a.navlink { white-space: nowrap; }
+  }
+
+  /* ---------- Header with flat-minimum contour signature ---------- */
+  header {
+    position: relative;
+    padding: 72px 0 48px;
+    border-bottom: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .header-inner { position: relative; display: flex; gap: 36px; align-items: flex-start; }
+  .header-text { flex: 1; min-width: 0; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-family: 'Newsreader', serif;
+    font-size: 44px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  .affiliation {
+    font-size: 16px;
+    color: var(--slate);
+    margin-bottom: 22px;
+  }
+  .affiliation a { font-weight: 500; }
+
+  .profile-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 6px;
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+  .profile-links a {
+    padding: 5px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--ink);
+    transition: border-color .15s, background .15s;
+  }
+  .profile-links a:hover { border-color: var(--accent); background: var(--accent-soft); }
+
+  .avatar {
+    width: 148px; height: 148px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    background: var(--accent-soft);
+    flex-shrink: 0;
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: 44px 0 8px; }
+  h2 {
+    font-family: 'Newsreader', serif;
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-bottom: 22px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  h2::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+    transform: translateY(-4px);
+  }
+
+  .bio p { margin-bottom: 14px; color: #2a3441; }
+  .bio strong { font-weight: 600; }
+
+  /* Publications */
+  .pub { padding: 16px 0 18px; border-bottom: 1px solid var(--line); }
+  .pub:last-child { border-bottom: none; }
+  .pub-title {
+    font-family: 'Newsreader', serif;
+    font-size: 18.5px;
+    font-weight: 500;
+    line-height: 1.35;
+    margin-bottom: 5px;
+  }
+  .pub-title a { color: var(--ink); }
+  .pub-title a:hover { color: var(--accent); }
+  .pub-authors { font-size: 14px; color: var(--slate); margin-bottom: 7px; }
+  .pub-authors .me { font-weight: 600; color: var(--ink); }
+  .pub-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 13px; }
+  .venue {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    padding: 3px 9px;
+    border-radius: 4px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 500;
+  }
+  .venue.oral { background: #fdf0e7; color: var(--oral); }
+  .venue.review { background: #f2f2ef; color: var(--faint); }
+  .pub-links a { font-weight: 500; margin-right: 10px; font-size: 13px; }
+
+  /* Experience */
+  .exp { list-style: none; }
+  .exp li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 24px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .exp li:last-child { border-bottom: none; }
+  .exp .org { font-weight: 600; }
+  .exp .role { grid-column: 1 / -1; font-size: 14px; color: var(--slate); margin-top: -3px; }
+  .exp time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--faint);
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+
+  /* Awards */
+  .awards { list-style: none; }
+  .awards li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    padding: 8px 0;
+  }
+  .awards time {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--faint);
+    white-space: nowrap;
+    padding-top: 3px;
+  }
+  .awards .hl { font-weight: 600; }
+
+  footer {
+    margin-top: 56px;
+    padding: 28px 0 44px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--faint);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 640px) {
+    header { padding: 48px 0 36px; }
+    .header-inner { flex-direction: column-reverse; gap: 24px; }
+    h1 { font-size: 34px; }
+    .exp li, .awards li { grid-template-columns: 1fr; gap: 2px; }
+    .exp time, .awards time { order: -1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <nav class="wrap topnav-inner" aria-label="Site">
+    <a class="brand" href="#top">Hyun Kyu Lee</a>
+    <a class="navlink" href="#about">About</a>
+    <a class="navlink" href="#publications">Publications</a>
+    <a class="navlink" href="#experience">Experience</a>
+    <a class="navlink" href="#awards">Awards</a>
+  </nav>
+</div>
+
+<header id="top">
+
+  <div class="wrap header-inner">
+    <div class="header-text">
+      <p class="eyebrow">Robust RL · Quantum ML · Physical AI</p>
+      <h1>Hyun Kyu Lee</h1>
+      <p class="affiliation">
+        Ph.D. Candidate, <a href="https://aigs.unist.ac.kr/">Graduate School of AI, UNIST</a><br>
+        Research Intern, Qualcomm AI Research
+      </p>
+      <nav class="profile-links" aria-label="Profiles">
+        <a href="CV_HyunKyuLee.pdf">CV</a>
+        <a href="https://scholar.google.com/citations?user=DVfJVbYAAAAJ">Google Scholar</a>
+        <a href="https://openreview.net/profile?id=~Hyun_Kyu_Lee1">OpenReview</a>
+        <a href="https://github.com/HK-05">GitHub</a>
+        <a href="https://www.linkedin.com/in/YOUR-LINKEDIN-ID">LinkedIn</a>
+        <a href="mailto:dnwldlwl@unist.ac.kr">Email</a>
+      </nav>
+    </div>
+    <img class="avatar" src="profile.jpg" alt="Hyun Kyu Lee presenting at ICLR 2025">
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="about" class="bio">
+    <h2>About</h2>
+    <p>
+      I am a Ph.D. candidate at the Graduate School of AI, UNIST, advised by
+      Prof. <a href="https://sites.google.com/view/swyoon">Sung Whan Yoon</a>.
+      My research builds <strong>robust reinforcement learning</strong> on the geometry of the reward
+      landscape — establishing theoretical links between <strong>flatness and policy robustness</strong> —
+      and develops <strong>quantum machine learning</strong> algorithms that address the fundamental
+      limitations of classical machine learning.
+    </p>
+    <p>
+      I am currently a research intern on the Automated Driving team at
+      <strong>Qualcomm AI Research</strong>, working on world model–based closed-loop RL for robust
+      end-to-end driving. Before my Ph.D., I served as a Republic of Korea Navy officer,
+      leading the development and deployment of AI detection systems for maritime radar and vision sensors.
+    </p>
+  </section>
+
+  <section id="publications">
+    <h2>Publications</h2>
+
+    <article class="pub">
+      <p class="pub-title"><a href="https://openreview.net/forum?id=6rTth6ujE2">Quantum Robust Inner Minimization for Reinforcement Learning with Quadratic Speed-Up in Query Complexity</a></p>
+      <p class="pub-authors"><span class="me">Hyun Kyu Lee</span>, Joongheon Kim, Sung Whan Yoon</p>
+      <p class="pub-meta">
+        <span class="venue">ICML 2026</span>
+        <span class="pub-links">
+          <a href="https://openreview.net/forum?id=6rTth6ujE2">OpenReview</a>
+          <a href="https://github.com/HK-05/QRIM">Code</a>
+        </span>
+      </p>
+    </article>
+
+    <article class="pub">
+      <p class="pub-title"><a href="https://openreview.net/forum?id=4OaO3GjP7k">Flat Reward in Policy Parameter Space Implies Robust Reinforcement Learning</a></p>
+      <p class="pub-authors"><span class="me">Hyun Kyu Lee</span>, Sung Whan Yoon</p>
+      <p class="pub-meta">
+        <span class="venue oral">ICLR 2025 · Oral (top 1.8%)</span>
+        <span class="pub-links">
+          <a href="https://openreview.net/forum?id=4OaO3GjP7k">OpenReview</a>
+          <a href="https://github.com/HK-05/flatreward-RRL">Code</a>
+        </span>
+      </p>
+    </article>
+
+    <article class="pub">
+      <p class="pub-title">Q-SAM: Quantum-Native Sharpness-Aware Minimization</p>
+      <p class="pub-authors"><span class="me">Hyun Kyu Lee</span>, Sung Whan Yoon</p>
+      <p class="pub-meta"><span class="venue review">Under review, NeurIPS 2026</span></p>
+    </article>
+
+    <article class="pub">
+      <p class="pub-title">Strong Lottery Ticket Hypothesis for Quantum Neural Networks</p>
+      <p class="pub-authors">Hongkyun Kwon, <span class="me">Hyun Kyu Lee</span>, Joongheon Kim, Sung Whan Yoon</p>
+      <p class="pub-meta"><span class="venue review">Under review, CIKM 2026</span></p>
+    </article>
+
+    <article class="pub">
+      <p class="pub-title">Flat-RLVR: Sharpness-Aware Reinforcement Learning with Verifiable Rewards for Reasoning Capacity in LLMs</p>
+      <p class="pub-authors">Yeonbum Kim, <span class="me">Hyun Kyu Lee</span>, Sung Whan Yoon</p>
+      <p class="pub-meta"><span class="venue review">Under review, EMNLP 2026</span></p>
+    </article>
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <ul class="exp">
+      <li>
+        <span class="org">Qualcomm AI Research, Seoul</span>
+        <time>Jun 2026 – Oct 2026</time>
+        <span class="role">Research Intern, Automated Driving — world model–based closed-loop RL for robust end-to-end driving</span>
+      </li>
+      <li>
+        <span class="org">Ministry of National Defense, Seoul</span>
+        <time>Feb 2025 – Present</time>
+        <span class="role">AI &amp; Data Policy Officer (Lieutenant) — data governance frameworks for defense AI systems</span>
+      </li>
+      <li>
+        <span class="org">Republic of Korea Navy, Gyeryong</span>
+        <time>Aug 2023 – Feb 2025</time>
+        <span class="role">AI Development Team Leader (Lieutenant) — AI detection systems for maritime radar and vision sensors</span>
+      </li>
+      <li>
+        <span class="org">Republic of Korea Navy, Changwon</span>
+        <time>Aug 2020 – Aug 2023</time>
+        <span class="role">AI Instructor (Lieutenant Junior Grade) — deep learning courses for military AI specialists</span>
+      </li>
+      <li>
+        <span class="org">Graduate School of AI, UNIST</span>
+        <time>Mar 2022 – Present</time>
+        <span class="role">Ph.D. Candidate (Advisor: Prof. Sung Whan Yoon)</span>
+      </li>
+    </ul>
+  </section>
+
+  <section id="awards">
+    <h2>Awards &amp; Honors</h2>
+    <ul class="awards">
+      <li><span class="hl">Winner, Qualcomm Innovation Fellowship Korea (QIFK)</span><time>Nov 2025</time></li>
+      <li><span>Outstanding Poster Award, UNIST AI Technology Workshop</span><time>Oct 2025</time></li>
+      <li><span>Commendation, Chief of Naval Operations, ROKN</span><time>Dec 2024</time></li>
+      <li><span>2nd Place, Navy AI Challenge, ROKN</span><time>Nov 2024</time></li>
+      <li><span>Commendation, Chief of Information &amp; Communications Branch, ROKN</span><time>Dec 2023</time></li>
+      <li><span>1st Place, Navy AI Challenge, ROKN</span><time>May 2023</time></li>
+      <li><span>Valedictorian, Navy Officer Candidate School, ROKN</span><time>Aug 2019</time></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <span>© 2026 Hyun Kyu Lee</span>
+  <span>Hosted on GitHub Pages</span>
+</footer>
+
+</body>
+</html>
